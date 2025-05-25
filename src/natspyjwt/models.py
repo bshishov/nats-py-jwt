@@ -109,7 +109,7 @@ class Account(GenericFields):
     signing_keys: Optional[list[AccountSigningKey]] = None
     revocations: Optional[dict[str, int]] = None
     default_permissions: Optional[Permissions] = None
-    mappings: dict[str, Optional[list[WeightedMapping]]] = None
+    mappings: Optional[dict[str, list[WeightedMapping]]] = None
     external: Optional[ExternalAuthorization] = None
     trace: Optional[MsgTrace] = None
     description: Optional[str] = None
@@ -233,7 +233,7 @@ class Export:
     subject: Optional[str] = None
     type: Optional[ExportType] = None
     token_req: Optional[bool] = None
-    revocations: dict[str, Optional[int]] = None
+    revocations: Optional[dict[str, int]] = None
     response_type: Optional[str] = None
     response_threshold: Optional[int] = None  # nanoseconds
     latency: Optional[ServiceLatency] = None
@@ -326,7 +326,7 @@ class OperatorLimits:
     mem_max_stream_bytes: Optional[int] = None
     disk_max_stream_bytes: Optional[int] = None
     max_bytes_required: Optional[bool] = None
-    tiered_limits: dict[str, Optional[JetStreamLimits]] = None
+    tiered_limits: Optional[dict[str, JetStreamLimits]] = None
 
 
 @dataclass
