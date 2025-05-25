@@ -103,13 +103,13 @@ class JwtClaimsData:
 
 @dataclass
 class Account(GenericFields):
-    imports: list[Import] | None = None
-    exports: list[Export] | None = None
+    imports: Optional[list[Import]] = None
+    exports: Optional[list[Export]] = None
     limits: Optional[OperatorLimits] = None
-    signing_keys: list[AccountSigningKey] | None = None
-    revocations: dict[str, int] | None = None
+    signing_keys: Optional[list[AccountSigningKey]] = None
+    revocations: Optional[dict[str, int]] = None
     default_permissions: Optional[Permissions] = None
-    mappings: dict[str, list[WeightedMapping]] | None = None
+    mappings: dict[str, Optional[list[WeightedMapping]]] = None
     external: Optional[ExternalAuthorization] = None
     trace: Optional[MsgTrace] = None
     description: Optional[str] = None
@@ -209,8 +209,8 @@ class ClientInformation:
 class ClientTls:
     version: Optional[str] = None
     cipher: Optional[str] = None
-    certs: list[str] | None = None
-    verified_chains: list[list[str]] | None = None
+    certs: Optional[list[str]] = None
+    verified_chains: Optional[list[list[str]]] = None
 
 
 @dataclass
@@ -233,7 +233,7 @@ class Export:
     subject: Optional[str] = None
     type: Optional[ExportType] = None
     token_req: Optional[bool] = None
-    revocations: dict[str, int] | None = None
+    revocations: dict[str, Optional[int]] = None
     response_type: Optional[str] = None
     response_threshold: Optional[int] = None  # nanoseconds
     latency: Optional[ServiceLatency] = None
@@ -252,8 +252,8 @@ class ExportType(Enum):
 
 @dataclass
 class ExternalAuthorization:
-    auth_users: list[str] | None = None
-    allowed_accounts: list[str] | None = None
+    auth_users: Optional[list[str]] = None
+    allowed_accounts: Optional[list[str]] = None
     xkey: Optional[str] = None
 
 
@@ -291,9 +291,9 @@ class MsgTrace:
 
 @dataclass
 class Operator(GenericFields):
-    signing_keys: list[str] | None = None
+    signing_keys: Optional[list[str]] = None
     account_server_url: Optional[str] = None
-    operator_service_urls: list[str] | None = None
+    operator_service_urls: Optional[list[str]] = None
     system_account: Optional[str] = None
     assert_server_version: Optional[str] = None
     strict_signing_key_usage: Optional[bool] = None
@@ -326,13 +326,13 @@ class OperatorLimits:
     mem_max_stream_bytes: Optional[int] = None
     disk_max_stream_bytes: Optional[int] = None
     max_bytes_required: Optional[bool] = None
-    tiered_limits: dict[str, JetStreamLimits] | None = None
+    tiered_limits: dict[str, Optional[JetStreamLimits]] = None
 
 
 @dataclass
 class Permission:
-    allow: list[str] | None = None
-    deny: list[str] | None = None
+    allow: Optional[list[str]] = None
+    deny: Optional[list[str]] = None
 
 
 @dataclass
@@ -370,14 +370,14 @@ class User(GenericFields):
     pub: Permission = field(factory=Permission)
     sub: Permission = field(factory=Permission)
     resp: Optional[ResponsePermission] = None
-    src: list[str] | None = None
-    times: list[TimeRange] | None = None
+    src: Optional[list[str]] = None
+    times: Optional[list[TimeRange]] = None
     locale: Optional[str] = None
     subs: Optional[int] = None
     data: Optional[int] = None
     payload: Optional[int] = None
     bearer_token: Optional[bool] = None
-    allowed_connection_types: list[str] | None = None
+    allowed_connection_types: Optional[list[str]] = None
     issuer_account: Optional[str] = None
 
 
