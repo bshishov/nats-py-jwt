@@ -16,4 +16,4 @@ NOT FOR PRODUCTION USE YET! (but works)
 * lack of docs
 * not tested under various python interpreters (just Cpython 3.11)
 
-other thatn that it works, mypy complaint and critical functionality if test-covered
+other thatn that it works, mypy complaint and critical functionality is test-covered
