@@ -1,5 +1,5 @@
 from attr import fields, has
-from typing import TypeVar, Type, Any
+from typing import TypeVar, Type, Any, Union
 
 from cattrs.preconf.json import make_converter, JsonConverter
 from cattrs import override
@@ -59,5 +59,5 @@ def serialize_json(obj: object) -> str:
     return _CONVERTER.dumps(obj)
 
 
-def deserialize_json(data: str | bytes, tp: Type[_T]) -> _T:
+def deserialize_json(data: Union[str, bytes], tp: Type[_T]) -> _T:
     return _CONVERTER.loads(data, tp)

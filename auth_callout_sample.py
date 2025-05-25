@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 from dataclasses import dataclass
+from typing import Optional
 
 import nats
 from nats.micro import add_service
@@ -23,7 +24,7 @@ ENCRYPTION_XKEY_SEED = os.environ.get("ENCRYPTION_XKEY_SEED")
 @dataclass
 class AuthService:
     _issuer_kp: KeyPair
-    _encryption_kp: KeyPair | None
+    _encryption_kp: Optional[KeyPair]
 
     async def handle(self, request: Request) -> None:
         # TODO: implement proper error handling

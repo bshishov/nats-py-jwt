@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 import nkeys
 from attr import dataclass, field
@@ -53,20 +53,20 @@ TagList = list[str]
 
 @dataclass
 class JetStreamLimits:
-    mem_storage: int | None = None
-    disk_storage: int | None = None
-    streams: int | None = None
-    consumer: int | None = None
-    max_ack_pending: int | None = None
-    mem_max_stream_bytes: int | None = None
-    disk_max_stream_bytes: int | None = None
-    max_bytes_required: bool | None = None
+    mem_storage: Optional[int] = None
+    disk_storage: Optional[int] = None
+    streams: Optional[int] = None
+    consumer: Optional[int] = None
+    max_ack_pending: Optional[int] = None
+    mem_max_stream_bytes: Optional[int] = None
+    disk_max_stream_bytes: Optional[int] = None
+    max_bytes_required: Optional[bool] = None
 
 
 @dataclass
 class JwtHeader:
-    typ: str | None = None
-    alg: str | None = None
+    typ: Optional[str] = None
+    alg: Optional[str] = None
 
     def validate(self) -> None:
         if self.typ != "JWT":
@@ -81,21 +81,21 @@ class JwtHeader:
 
 @dataclass
 class GenericFields:
-    tags: TagList | None = None
-    type: str | None = None
-    version: int | None = None
+    tags: Optional[TagList] = None
+    type: Optional[str] = None
+    version: Optional[int] = None
 
 
 @dataclass
 class JwtClaimsData:
-    aud: str | None = None  # audience
-    jti: str | None = None  # jwt id
-    iat: int | None = None  # issued at
-    iss: str | None = None  # issuer
-    name: str | None = None
-    sub: str | None = None  # subject
-    exp: int | None = None  # expiration time
-    nbf: int | None = None  # not before
+    aud: Optional[str] = None  # audience
+    jti: Optional[str] = None  # jwt id
+    iat: Optional[int] = None  # issued at
+    iss: Optional[str] = None  # issuer
+    name: Optional[str] = None
+    sub: Optional[str] = None  # subject
+    exp: Optional[int] = None  # expiration time
+    nbf: Optional[int] = None  # not before
 
     def expected_prefixes(self) -> list[nkeys.PrefixByte]:
         raise JwtInvalidClaimError
@@ -105,15 +105,15 @@ class JwtClaimsData:
 class Account(GenericFields):
     imports: list[Import] | None = None
     exports: list[Export] | None = None
-    limits: OperatorLimits | None = None
+    limits: Optional[OperatorLimits] = None
     signing_keys: list[AccountSigningKey] | None = None
     revocations: dict[str, int] | None = None
-    default_permissions: Permissions | None = None
+    default_permissions: Optional[Permissions] = None
     mappings: dict[str, list[WeightedMapping]] | None = None
-    external: ExternalAuthorization | None = None
-    trace: MsgTrace | None = None
-    description: str | None = None
-    info_url: str | None = None
+    external: Optional[ExternalAuthorization] = None
+    trace: Optional[MsgTrace] = None
+    description: Optional[str] = None
+    info_url: Optional[str] = None
 
 
 @dataclass
@@ -138,16 +138,16 @@ class AccountSigningKey:
 @dataclass
 class AccountScopedSigningKey(AccountSigningKey):
     kind: str = "user_scope"
-    key: str | None = None
-    role: str | None = None
-    template: User | None = None
+    key: Optional[str] = None
+    role: Optional[str] = None
+    template: Optional[User] = None
 
 
 @dataclass
 class Activation(GenericFields):
-    subject: str | None = None  # ImportSubject
-    kind: int | None = None  # ImportType
-    issuer_account: str | None = None
+    subject: Optional[str] = None  # ImportSubject
+    kind: Optional[int] = None  # ImportType
+    issuer_account: Optional[str] = None
 
 
 @dataclass
@@ -160,12 +160,12 @@ class ActivationClaims(JwtClaimsData):
 
 @dataclass
 class AuthorizationRequest(GenericFields):
-    server_id: ServerId | None = None
-    user_nkey: str | None = None
-    client_info: ClientInformation | None = None
-    connect_opts: ConnectOptions | None = None
-    client_tls: ClientTls | None = None
-    request_nonce: str | None = None
+    server_id: Optional[ServerId] = None
+    user_nkey: Optional[str] = None
+    client_info: Optional[ClientInformation] = None
+    connect_opts: Optional[ConnectOptions] = None
+    client_tls: Optional[ClientTls] = None
+    request_nonce: Optional[str] = None
 
 
 @dataclass
@@ -178,9 +178,9 @@ class AuthorizationRequestClaims(JwtClaimsData):
 
 @dataclass
 class AuthorizationResponse(GenericFields):
-    jwt: str | None = None
-    error: str | None = None
-    issuer_account: str | None = None
+    jwt: Optional[str] = None
+    error: Optional[str] = None
+    issuer_account: Optional[str] = None
 
 
 @dataclass
@@ -193,55 +193,55 @@ class AuthorizationResponseClaims(JwtClaimsData):
 
 @dataclass
 class ClientInformation:
-    host: str | None = None
-    id: int | None = None
-    user: str | None = None
-    name: str | None = None
-    tags: TagList | None = None
-    name_tag: str | None = None
-    kind: str | None = None
-    type: str | None = None
-    mqtt_id: str | None = None
-    nonce: str | None = None
+    host: Optional[str] = None
+    id: Optional[int] = None
+    user: Optional[str] = None
+    name: Optional[str] = None
+    tags: Optional[TagList] = None
+    name_tag: Optional[str] = None
+    kind: Optional[str] = None
+    type: Optional[str] = None
+    mqtt_id: Optional[str] = None
+    nonce: Optional[str] = None
 
 
 @dataclass
 class ClientTls:
-    version: str | None = None
-    cipher: str | None = None
+    version: Optional[str] = None
+    cipher: Optional[str] = None
     certs: list[str] | None = None
     verified_chains: list[list[str]] | None = None
 
 
 @dataclass
 class ConnectOptions:
-    jwt: str | None = None
-    nkey: str | None = None
-    sig: str | None = None
-    auth_token: str | None = None
-    user: str | None = None
-    pass_: str | None = None
-    name: str | None = None
-    lang: str | None = None
-    version: str | None = None
+    jwt: Optional[str] = None
+    nkey: Optional[str] = None
+    sig: Optional[str] = None
+    auth_token: Optional[str] = None
+    user: Optional[str] = None
+    pass_: Optional[str] = None
+    name: Optional[str] = None
+    lang: Optional[str] = None
+    version: Optional[str] = None
     protocol: int = 1
 
 
 @dataclass
 class Export:
-    name: str | None = None
-    subject: str | None = None
-    type: ExportType | None = None
-    token_req: bool | None = None
+    name: Optional[str] = None
+    subject: Optional[str] = None
+    type: Optional[ExportType] = None
+    token_req: Optional[bool] = None
     revocations: dict[str, int] | None = None
-    response_type: str | None = None
-    response_threshold: int | None = None  # nanoseconds
-    latency: ServiceLatency | None = None
-    account_token_position: int | None = None
-    advertise: bool | None = None
-    allow_trace: bool | None = None
-    description: str | None = None
-    info_url: str | None = None
+    response_type: Optional[str] = None
+    response_threshold: Optional[int] = None  # nanoseconds
+    latency: Optional[ServiceLatency] = None
+    account_token_position: Optional[int] = None
+    advertise: Optional[bool] = None
+    allow_trace: Optional[bool] = None
+    description: Optional[str] = None
+    info_url: Optional[str] = None
 
 
 class ExportType(Enum):
@@ -254,7 +254,7 @@ class ExportType(Enum):
 class ExternalAuthorization:
     auth_users: list[str] | None = None
     allowed_accounts: list[str] | None = None
-    xkey: str | None = None
+    xkey: Optional[str] = None
 
 
 @dataclass
@@ -267,36 +267,36 @@ class GenericClaims(JwtClaimsData):
 
 @dataclass
 class GenericFieldsClaims(JwtClaimsData):
-    nats: GenericFields | None = None
+    nats: Optional[GenericFields] = None
 
 
 @dataclass
 class Import:
-    name: str | None = None
-    subject: str | None = None
-    account: str | None = None
-    token: str | None = None
-    to: str | None = None
-    local_subject: str | None = None
-    type: ExportType | None = None
-    share: bool | None = None
-    allow_trace: bool | None = None
+    name: Optional[str] = None
+    subject: Optional[str] = None
+    account: Optional[str] = None
+    token: Optional[str] = None
+    to: Optional[str] = None
+    local_subject: Optional[str] = None
+    type: Optional[ExportType] = None
+    share: Optional[bool] = None
+    allow_trace: Optional[bool] = None
 
 
 @dataclass
 class MsgTrace:
-    dest: str | None = None
-    sampling: int | None = None
+    dest: Optional[str] = None
+    sampling: Optional[int] = None
 
 
 @dataclass
 class Operator(GenericFields):
     signing_keys: list[str] | None = None
-    account_server_url: str | None = None
+    account_server_url: Optional[str] = None
     operator_service_urls: list[str] | None = None
-    system_account: str | None = None
-    assert_server_version: str | None = None
-    strict_signing_key_usage: bool | None = None
+    system_account: Optional[str] = None
+    assert_server_version: Optional[str] = None
+    strict_signing_key_usage: Optional[bool] = None
 
 
 @dataclass
@@ -309,23 +309,23 @@ class OperatorClaims(JwtClaimsData):
 
 @dataclass
 class OperatorLimits:
-    subs: int | None = None
-    data: int | None = None
-    payload: int | None = None
-    imports: int | None = None
-    exports: int | None = None
-    wildcards: bool | None = None
-    disallow_bearer: bool | None = None
-    conn: int | None = None
-    leaf: int | None = None
-    mem_storage: int | None = None
-    disk_storage: int | None = None
-    streams: int | None = None
-    consumer: int | None = None
-    max_ack_pending: int | None = None
-    mem_max_stream_bytes: int | None = None
-    disk_max_stream_bytes: int | None = None
-    max_bytes_required: bool | None = None
+    subs: Optional[int] = None
+    data: Optional[int] = None
+    payload: Optional[int] = None
+    imports: Optional[int] = None
+    exports: Optional[int] = None
+    wildcards: Optional[bool] = None
+    disallow_bearer: Optional[bool] = None
+    conn: Optional[int] = None
+    leaf: Optional[int] = None
+    mem_storage: Optional[int] = None
+    disk_storage: Optional[int] = None
+    streams: Optional[int] = None
+    consumer: Optional[int] = None
+    max_ack_pending: Optional[int] = None
+    mem_max_stream_bytes: Optional[int] = None
+    disk_max_stream_bytes: Optional[int] = None
+    max_bytes_required: Optional[bool] = None
     tiered_limits: dict[str, JetStreamLimits] | None = None
 
 
@@ -337,48 +337,48 @@ class Permission:
 
 @dataclass
 class Permissions:
-    pub: Permission | None = None
-    sub: Permission | None = None
-    resp: Permission | None = None
+    pub: Optional[Permission] = None
+    sub: Optional[Permission] = None
+    resp: Optional[Permission] = None
 
 
 @dataclass
 class ResponsePermission:
-    max: int | None = None
-    ttl: int | None = None
+    max: Optional[int] = None
+    ttl: Optional[int] = None
 
 
 @dataclass
 class ServerId:
-    name: str | None = None
-    host: str | None = None
-    id: str | None = None
-    version: str | None = None
-    cluster: str | None = None
-    tags: TagList | None = None
-    xkey: str | None = None
+    name: Optional[str] = None
+    host: Optional[str] = None
+    id: Optional[str] = None
+    version: Optional[str] = None
+    cluster: Optional[str] = None
+    tags: Optional[TagList] = None
+    xkey: Optional[str] = None
 
 
 @dataclass
 class ServiceLatency:
-    sampling: int | None = None
-    results: str | None = None
+    sampling: Optional[int] = None
+    results: Optional[str] = None
 
 
 @dataclass
 class User(GenericFields):
     pub: Permission = field(factory=Permission)
     sub: Permission = field(factory=Permission)
-    resp: ResponsePermission | None = None
+    resp: Optional[ResponsePermission] = None
     src: list[str] | None = None
     times: list[TimeRange] | None = None
-    locale: str | None = None
-    subs: int | None = None
-    data: int | None = None
-    payload: int | None = None
-    bearer_token: bool | None = None
+    locale: Optional[str] = None
+    subs: Optional[int] = None
+    data: Optional[int] = None
+    payload: Optional[int] = None
+    bearer_token: Optional[bool] = None
     allowed_connection_types: list[str] | None = None
-    issuer_account: str | None = None
+    issuer_account: Optional[str] = None
 
 
 @dataclass
@@ -391,12 +391,12 @@ class UserClaims(JwtClaimsData):
 
 @dataclass
 class WeightedMapping:
-    subject: str | None = None
-    weight: int | None = None  # byte
-    cluster: str | None = None
+    subject: Optional[str] = None
+    weight: Optional[int] = None  # byte
+    cluster: Optional[str] = None
 
 
 @dataclass
 class TimeRange:
-    start: str | None = None
-    end: str | None = None
+    start: Optional[str] = None
+    end: Optional[str] = None

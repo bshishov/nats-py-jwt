@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import TypeVar, Union, Optional
 import base64
 import json
 import datetime
@@ -110,48 +110,48 @@ def set_version(claims: TGeneric, tp: str) -> None:
 
 
 def encode_activation_claims(
-    claims: ActivationClaims, kp: KeyPair, issued_at: int | None = None
+    claims: ActivationClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     set_version(claims.nats, ACTIVATION_CLAIM)
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_authorization_request_claims(
-    claims: AuthorizationRequestClaims, kp: KeyPair, issued_at: int | None
+    claims: AuthorizationRequestClaims, kp: KeyPair, issued_at: Optional[int]
 ) -> bytes:
     set_version(claims.nats, AUTHORIZATION_REQUEST_CLAIM)
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_authorization_response_claims(
-    claims: AuthorizationResponseClaims, kp: KeyPair, issued_at: int | None = None
+    claims: AuthorizationResponseClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     set_version(claims.nats, AUTHORIZATION_RESPONSE_CLAIM)
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_generic_claims(
-    claims: GenericClaims, kp: KeyPair, issued_at: int | None = None
+    claims: GenericClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_operator_claims(
-    claims: OperatorClaims, kp: KeyPair, issued_at: int | None = None
+    claims: OperatorClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     set_version(claims.nats, OPERATOR_CLAIM)
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_user_claims(
-    claims: UserClaims, kp: KeyPair, issued_at: int | None = None
+    claims: UserClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     set_version(claims.nats, USER_CLAIM)
     return do_encode(JWT_HEADER, kp, claims, issued_at)
 
 
 def encode_account_claims(
-    claims: AccountClaims, kp: KeyPair, issued_at: int | None = None
+    claims: AccountClaims, kp: KeyPair, issued_at: Optional[int] = None
 ) -> bytes:
     set_version(claims.nats, ACCOUNT_CLAIM)
 
@@ -254,7 +254,7 @@ def _verify_signature(payload: bytes, signature: bytes, issuer: str) -> None:
 
 
 def do_encode(
-    jwt_header: JwtHeader, kp: KeyPair, claim: TClaimData, issued_at: int | None
+    jwt_header: JwtHeader, kp: KeyPair, claim: TClaimData, issued_at: Optional[int]
 ) -> bytes:
     jwt_header.validate()
     h = serialize(jwt_header)
@@ -305,7 +305,7 @@ def do_encode(
     return b"%s.%s" % (to_sign, encoded_sig)
 
 
-def _kind_and_version(jwt_payload: str | bytes) -> tuple[str, int]:
+def _kind_and_version(jwt_payload: Union[str, bytes]) -> tuple[str, int]:
     jwt_payload_data = json.loads(jwt_payload)
     typ = jwt_payload_data.get("type")
     if typ:
@@ -336,7 +336,7 @@ def serialize(o: object) -> bytes:
     return encode_b64url_no_padding(j.encode(JWT_ENCODING))
 
 
-def decode_b64url_no_padding(s: str | bytes) -> bytes:
+def decode_b64url_no_padding(s: Union[str, bytes]) -> bytes:
     pad = -len(s) % 4
     if pad == 0:
         return base64.urlsafe_b64decode(s)
