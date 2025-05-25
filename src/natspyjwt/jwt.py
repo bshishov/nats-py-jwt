@@ -167,14 +167,18 @@ def encode_account_claims(
 def decode_operator_claims(jwt: bytes) -> OperatorClaims:
     claims = decode_claims(jwt, OperatorClaims)
     if claims.nats.type != OPERATOR_CLAIM:
-        raise JwtDecodeError(f"Expected {OPERATOR_CLAIM} claim, but got {claims.nats.type}")
+        raise JwtDecodeError(
+            f"Expected {OPERATOR_CLAIM} claim, but got {claims.nats.type}"
+        )
     return claims
 
 
 def decode_account_claims(jwt: bytes) -> AccountClaims:
     claims = decode_claims(jwt, AccountClaims)
     if claims.nats.type != ACCOUNT_CLAIM:
-        raise JwtDecodeError(f"Expected {ACCOUNT_CLAIM} claim, but got {claims.nats.type}")
+        raise JwtDecodeError(
+            f"Expected {ACCOUNT_CLAIM} claim, but got {claims.nats.type}"
+        )
     return claims
 
 
@@ -188,14 +192,18 @@ def decode_user_claims(jwt: bytes) -> UserClaims:
 def decode_activation_claims(jwt: bytes) -> ActivationClaims:
     claims = decode_claims(jwt, ActivationClaims)
     if claims.nats.type != ACTIVATION_CLAIM:
-        raise JwtDecodeError(f"Expected {ACTIVATION_CLAIM} claim, but got {claims.nats.type}")
+        raise JwtDecodeError(
+            f"Expected {ACTIVATION_CLAIM} claim, but got {claims.nats.type}"
+        )
     return claims
 
 
 def decode_authorization_request_claims(jwt: bytes) -> AuthorizationRequestClaims:
     claims = decode_claims(jwt, AuthorizationRequestClaims)
     if claims.nats.type != AUTHORIZATION_REQUEST_CLAIM:
-        raise JwtDecodeError(f"Expected {AUTHORIZATION_REQUEST_CLAIM} claim, but got {claims.nats.type}")
+        raise JwtDecodeError(
+            f"Expected {AUTHORIZATION_REQUEST_CLAIM} claim, but got {claims.nats.type}"
+        )
     return claims
 
 
