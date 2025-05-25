@@ -2,6 +2,7 @@ from typing import TypeVar, Union, Optional
 import base64
 import json
 import datetime
+from datetime import timezone
 from hashlib import sha256
 
 import nkeys
@@ -357,4 +358,4 @@ def hash_claims(c: JwtClaimsData) -> bytes:
 
 
 def utc_now_timestamp() -> int:
-    return int(datetime.datetime.now(tz=datetime.UTC).timestamp())
+    return int(datetime.datetime.now(tz=timezone.utc).timestamp())
