@@ -14,6 +14,6 @@ NOT FOR PRODUCTION USE YET! (but works)
 * auth_callout example does not properly handle errors, just happy path
 * not very pythonic code (was following other implementations closely)
 * lack of docs
-* not tested under various python interpreters (just Cpython 3.11)
+* tested across Cpython 3.9 to 3.13
 
 other thatn that it works, mypy complaint and critical functionality is test-covered
